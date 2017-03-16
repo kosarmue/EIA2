@@ -1,0 +1,8 @@
+body {
+	text-align: center;
+}
+
+#greeting {
+	margin-top: 3em;
+	font-size: 2em;
+}
