@@ -22,7 +22,7 @@ for (var i : number = 0; i < n ; i++) {
 		}
 	}
 	x = (i%8)*size;
-	y = reihe*size;
+	y = (reihe-1)*size;
 
 	placeDiv(color, x, y, size, i);
 
@@ -30,23 +30,20 @@ for (var i : number = 0; i < n ; i++) {
 		reihe++
 	}
 }
-
 writeKoerner();
+
 
 function writeKoerner(): void {
 	var feld = document.getElementsByClassName("felder");
-	let koerner : number = 1;
+	let koerner : number;
 	for (var j = 0; j < feld.length; j++) {
+		koerner = Math.pow(2,j);
 		if(j > 23) {
-			koerner = koerner.toExponential(4)
+			koerner = koerner.toExponential(5)
 		}
-		feld[j].textContent = koerner;
-
-		koerner *= 2;
+		feld[j].textContent = koerner.toString();
 	}
 }
-
-
 
 
 function placeDiv(_color: string, _x: number, _y: number, _size: number, _koerner: number): void {
