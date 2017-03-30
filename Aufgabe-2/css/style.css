@@ -1,0 +1,17 @@
+.black {
+	background-color: black;
+	color: white;
+}
+
+.white {
+	background-color: white;
+	color: black;
+}
+
+div {
+	text-align: center;
+}
+
+body {
+	margin: 0 0;
+}
