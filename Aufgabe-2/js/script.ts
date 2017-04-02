@@ -44,7 +44,7 @@ writeKoerner();
 
 function writeKoerner(): void {
 	var feld = document.getElementsByClassName("felder");
-	let koerner : number;
+	let koerner : any;
 	for (var j = 0; j < feld.length; j++) {
 		koerner = Math.pow(2,j);
 		if(j > 23) {
