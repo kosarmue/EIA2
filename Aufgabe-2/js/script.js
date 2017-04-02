@@ -1,3 +1,11 @@
+/*
+Aufgabe: Aufgabe 2
+Name: Kai Halfinger
+Matrikel: 254872
+Datum: 30. März 2017
+    
+Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
+*/
 document.addEventListener('DOMContentLoaded', function () {
     var n = 64;
     var size = 120;
