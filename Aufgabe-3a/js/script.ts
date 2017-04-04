@@ -73,7 +73,7 @@ function placeDiv(_color: string, _x: number, _y: number, _size: number, _counte
 
 
 let divList : NodeListOf<HTMLElement> = document.getElementsByTagName("div");
-for (let i = 0; i < 9; i++) {
+for (let i = 0; i < 9; i++) {	/* Gibt den Feldern in der ersten Reihe bei einem Klick die Klasse "selected", wodurch sie rot werden */
 	divList[i].addEventListener("click", function() {
     	this.classList.toggle("selected");
     	showSummeKoerner();
