@@ -1,0 +1,36 @@
+/*
+Aufgabe: Aufgabe 3a
+Name: Kai Halfinger
+Matrikel: 254872
+Datum: 4. März 2017
+	
+Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
+*/
+
+.black {
+	background-color: black;
+	color: white;
+}
+
+.white {
+	background-color: white;
+	color: black;
+}
+
+div {
+	text-align: center;
+}
+
+.selected {
+	background-color: rgba(255,0,0,.5);
+}
+
+#tooltip {
+display: none;
+position: absolute;
+padding: .5em 1em;
+background-color: white;
+border: black solid 2px;
+z-index: 1;
+white-space: pre;
+}
