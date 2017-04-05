@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 3a
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 4. März 2017
+Datum: 5. März 2017
 	
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 */
@@ -19,6 +19,12 @@ Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde n
 
 div {
 	text-align: center;
+	-webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
 }
 
 .selected {

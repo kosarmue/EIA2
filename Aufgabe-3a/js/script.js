@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 3a
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 4. April 2017
+Datum: 5. April 2017
     
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 */
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
-document.body.addEventListener("mousemove", function (Event) {
+document.addEventListener("mousemove", function (Event) {
     document.getElementById("tooltip").style.left = (Event.clientX + 10) + "px";
     document.getElementById("tooltip").style.top = (Event.clientY + 10) + "px";
 });

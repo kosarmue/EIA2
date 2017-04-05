@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 3a
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 4. April 2017
+Datum: 5. April 2017
 	
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 */
@@ -100,11 +100,7 @@ function showSummeKoerner():void {
 
 });
 
-document.body.addEventListener("mousemove", function(Event) { /* Sorgt dafür, dass die Tooltip Box die Maus verfolgt */
+document.addEventListener("mousemove", function(Event) { /* Sorgt dafür, dass die Tooltip Box die Maus verfolgt */
 	document.getElementById("tooltip").style.left = (Event.clientX+10) + "px";
 	document.getElementById("tooltip").style.top = (Event.clientY+10) + "px";
-
-
-
-
 });
