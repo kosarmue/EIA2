@@ -2,14 +2,19 @@
 Aufgabe: Aufgabe 3
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 4. März 2017
+Datum: 5. März 2017
 	
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 */
 
 div {
 	width: 8em;
-	height: 12em;
+	height: 9em;
+	padding-top: 3em;
+	font-family: sans-serif;
+	text-align: center;
+	white-space: pre;
+	line-height: 2;
 	-webkit-touch-callout: none; 
     -webkit-user-select: none; 
     -khtml-user-select: none; 
@@ -21,33 +26,38 @@ div {
 #nachziehstapel {
 	float: left;
 	position: relative;
-	top: 1em;
-	left: 1em;
-	background-color: green;
+	top: 3em;
+	left: 3em;
+	background-color: lightblue;
+	border: 4px black solid;
 	cursor: pointer;
 }
 
 #ablagestapel {
 	float: left;
 	position: relative;
-	top: 1em;
+	top: 3em;
 	left: 5em;
-	background-color: red;
+	background-color: orange;
+	border: 4px black solid;
+	display: none;
 }
 
 #hand {
 	position: absolute;
 	bottom: 6em;
-	right: 6em;
+	left: 3em;
 	width: auto;
 	height: auto;
 	padding: 1em 1em;
 }
 
 .handkarten {
-	background-color: blue;
+	border: 8px black solid;
+	font-weight: 700;
 	display: inline;
-	float: right;
+	float: left;
 	margin: 1em 1em;
 	cursor: pointer;
+	
 }

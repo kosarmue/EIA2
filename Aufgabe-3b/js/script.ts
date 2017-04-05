@@ -19,7 +19,6 @@ document.getElementById("nachziehstapel").addEventListener("click", function() {
 		if(uebrigeKarten > 0) {
 			let kartennummer : number = Math.floor((Math.random() * 31) + 0); // Generiert 1 zufällige Zahl zwischen 0 und 31
 			while(karten[kartennummer] == undefined) {	// Generiert 1 neue Zahl, wenn die Zahl bereits generiert wurde
-				console.log("bereits gezogen");
 				kartennummer = Math.floor((Math.random() * 31) + 0);
 			}
 			let kartenwert : string = karten[kartennummer];
@@ -33,15 +32,16 @@ document.getElementById("nachziehstapel").addEventListener("click", function() {
     		div.addEventListener("click", function() {
     			gezogeneKarten--;
     			abgelegteKarten++;
-    			document.getElementById("ablagestapel").textContent = abgelegteKarten.toString();
+    			document.getElementById("ablagestapel").textContent = "Ablagestapel" + "\r\n" + "Karten: " + abgelegteKarten.toString();
+    			document.getElementById("ablagestapel").style.display = "inline-block";
     			this.parentNode.removeChild(this);
     		})
 			gezogeneKarten++;
 			uebrigeKarten = 32 - gezogeneKarten - abgelegteKarten;
-			document.getElementById("nachziehstapel").textContent = uebrigeKarten.toString();
+			document.getElementById("nachziehstapel").textContent = "Kartenstapel" + "\r\n" + "Karten: " + uebrigeKarten.toString();
 			// document.getElementById("hand").textContent = gezogeneKarten.toString();
 		}
-		else {console.log("Alles gezogen")};
+		else {};
 	}
 	else {};	
 });

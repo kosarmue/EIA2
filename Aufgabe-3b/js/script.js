@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (uebrigeKarten > 0) {
                 var kartennummer = Math.floor((Math.random() * 31) + 0); // Generiert 1 zufällige Zahl zwischen 0 und 31
                 while (karten[kartennummer] == undefined) {
-                    console.log("bereits gezogen");
                     kartennummer = Math.floor((Math.random() * 31) + 0);
                 }
                 var kartenwert = karten[kartennummer];
@@ -29,16 +28,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 div.addEventListener("click", function () {
                     gezogeneKarten--;
                     abgelegteKarten++;
-                    document.getElementById("ablagestapel").textContent = abgelegteKarten.toString();
+                    document.getElementById("ablagestapel").textContent = "Ablagestapel" + "\r\n" + "Karten: " + abgelegteKarten.toString();
+                    document.getElementById("ablagestapel").style.display = "inline-block";
                     this.parentNode.removeChild(this);
                 });
                 gezogeneKarten++;
                 uebrigeKarten = 32 - gezogeneKarten - abgelegteKarten;
-                document.getElementById("nachziehstapel").textContent = uebrigeKarten.toString();
+                document.getElementById("nachziehstapel").textContent = "Kartenstapel" + "\r\n" + "Karten: " + uebrigeKarten.toString();
             }
-            else {
-                console.log("Alles gezogen");
-            }
+            else { }
             ;
         }
         else { }
