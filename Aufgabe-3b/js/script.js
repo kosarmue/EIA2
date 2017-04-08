@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 3b
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 5. April 2017
+Datum: 8. April 2017
     
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 */
@@ -22,15 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("hand").appendChild(div);
             var s = div.style;
             div.className = "handkarten";
-            div.id = (handKarten.length - 1).toString();
             div.textContent = handKarten[handKarten.length - 1];
-            console.log(handKarten);
-            console.log(karten);
+            // console.log(karten);
+            // console.log("Hand " + handKarten);
             div.addEventListener("click", function () {
-                abgelegteKarten.push(handKarten[Number(this.id)]); // fügt die Karte dem Ablagestapel Array hinzu
-                handKarten.splice(Number(this.id), 1); // entfernte die geklickte Karte aus dem Array
-                console.log("Hand: " + handKarten);
-                console.log("Abgelegt: " + abgelegteKarten);
+                for (var i = 0; i < handKarten.length; i++) {
+                    if (this.textContent == handKarten[i]) {
+                        abgelegteKarten.push(handKarten[i]); // fügt die Karte dem Ablagestapel Array hinzu
+                        handKarten.splice(i, 1); // entfernte die geklickte Karte aus dem Array
+                        break;
+                    }
+                    else { }
+                }
+                // console.log("Neue Hand " + handKarten);
+                // console.log("Ablage " + abgelegteKarten);
                 document.getElementById("ablagestapel").textContent = "Ablagestapel" + "\r\n" + "Oberste Karte: " + "\r\n" + abgelegteKarten[abgelegteKarten.length - 1] + "\r\n" + "\r\n" + "Karten: " + abgelegteKarten.length.toString();
                 document.getElementById("ablagestapel").style.display = "inline-block";
                 this.parentNode.removeChild(this); // Entfernt das Div
