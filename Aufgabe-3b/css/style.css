@@ -34,6 +34,8 @@ div {
 }
 
 #ablagestapel {
+	padding-top: 1em;
+	height: 11em;
 	float: left;
 	position: relative;
 	top: 3em;
