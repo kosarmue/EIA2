@@ -2,7 +2,7 @@ var Blumenwiese;
 (function (Blumenwiese) {
     window.addEventListener("load", init);
     var crc2;
-    var flowersize = 20;
+    var flowersize = 30;
     function init(_event) {
         var canvas;
         canvas = document.getElementsByTagName("canvas")[0];
@@ -21,6 +21,13 @@ var Blumenwiese;
             x = Math.floor(Math.random() * ((canvas.width - flowersize) - (flowersize + 1)) + flowersize);
             y = Math.floor(Math.random() * ((canvas.height - flowersize) - ((canvas.height / 2 + flowersize) + 1)) + (canvas.height / 2 + flowersize));
             // Math.floor(Math.random() * (max - min + 1)) + min;
+            switch (colornr) {
+                case 0:
+                    drawGelb();
+                    break;
+                default:
+                    break;
+            }
             drawFlower(color, x, y);
         }
     }
@@ -33,8 +40,37 @@ var Blumenwiese;
         crc2.fillRect(0, _height / 2, _width, _height / 2);
     }
     function drawFlower(_color, _x, _y) {
+        // crc2.fillStyle = _color;
+        // crc2.fillRect(_x, _y, flowersize, flowersize);
+        crc2.beginPath();
+        // draw petals
+        var blaetter = 6;
+        for (var n = 0; n < blaetter; n++) {
+            var theta1 = ((Math.PI * 2) / blaetter) * (n + 1);
+            var theta2 = ((Math.PI * 2) / blaetter) * (n);
+            var x1 = (flowersize * Math.sin(theta1)) + _x;
+            var y1 = (flowersize * Math.cos(theta1)) + _y;
+            var x2 = (flowersize * Math.sin(theta2)) + _x;
+            var y2 = (flowersize * Math.cos(theta2)) + _y;
+            crc2.moveTo(_x, _y);
+            crc2.bezierCurveTo(x1, y1, x2, y2, _x, _y);
+        }
+        crc2.closePath();
         crc2.fillStyle = _color;
-        crc2.fillRect(_x, _y, flowersize, flowersize);
+        crc2.fill();
+        // draw yellow center
+        crc2.beginPath();
+        crc2.arc(_x, _y, flowersize / 5, 0, 2 * Math.PI, false);
+        crc2.fillStyle = "white";
+        crc2.fill();
+    }
+    function drawGelb() {
+    }
+    function drawBlau() {
+    }
+    function drawLila() {
+    }
+    function drawRot() {
     }
 })(Blumenwiese || (Blumenwiese = {}));
 //# sourceMappingURL=script.js.map
