@@ -2,7 +2,7 @@ var Blumenwiese;
 (function (Blumenwiese) {
     window.addEventListener("load", init);
     var crc2;
-    var flowersize = 30;
+    var flowersize = 24;
     function init(_event) {
         var canvas;
         canvas = document.getElementsByTagName("canvas")[0];
@@ -90,35 +90,34 @@ var Blumenwiese;
         crc2.fillStyle = "#ffffff";
         crc2.fill();
     }
-    function drawFlower(_color, _x, _y, _blaetter, _circleColor) {
-        // crc2.fillStyle = _color;
-        // crc2.fillRect(_x, _y, flowersize, flowersize);
+    function drawFlower(_color, _x, _y, _blaetter, _circleColor, _blattratio) {
+        // blätter zeichnen
         crc2.beginPath();
-        // draw petals
         for (var n = 0; n < _blaetter; n++) {
+            var blattbreite = flowersize / _blattratio;
             crc2.moveTo(_x, _y);
-            crc2.ellipse(_x, _y, 9, 6, (360 / (_blaetter - n)) * Math.PI / 180, 0, 2 * Math.PI);
+            crc2.ellipse(_x, _y, flowersize, blattbreite, n * (360 / _blaetter) * Math.PI / 180, 0, 2 * Math.PI);
         }
         crc2.closePath();
         crc2.fillStyle = _color;
         crc2.fill();
-        // draw yellow center
+        // punkt zeichnen
         crc2.beginPath();
         crc2.arc(_x, _y, flowersize / 5, 0, 2 * Math.PI, false);
         crc2.fillStyle = _circleColor;
         crc2.fill();
     }
     function drawYellow(_x, _y, _height) {
-        drawFlower("#EFD717", _x, _y + _height / 2, 8, "#FFFFFF");
+        drawFlower("#EFD717", _x, _y + _height / 2, 8, "#FFFFFF", 4);
     }
     function drawWhite(_x, _y, _height) {
-        drawFlower("#FFFFFF", _x, _y + _height / 2, 8, "#EFD717");
+        drawFlower("#FFFFFF", _x, _y + _height / 2, 7, "#EFD717", 8);
     }
     function drawBlue(_x, _y, _height) {
-        drawFlower("#11BAF9", _x, _y + _height / 2, 8, "#FFFFFF");
+        drawFlower("#11BAF9", _x, _y + _height / 2, 3, "#FFFFFF", 2);
     }
     function drawRed(_x, _y, _height) {
-        drawFlower("#EF3017", _x, _y + _height / 2, 8, "#FFFFFF");
+        drawFlower("#EF3017", _x, _y + _height / 2, 8, "#FFFFFF", 3);
     }
 })(Blumenwiese || (Blumenwiese = {}));
 //# sourceMappingURL=script.js.map

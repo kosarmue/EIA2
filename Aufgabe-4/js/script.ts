@@ -1,7 +1,7 @@
 namespace Blumenwiese {
 	window.addEventListener("load", init);
 	let crc2: CanvasRenderingContext2D;
-	let flowersize: number = 30;
+	let flowersize: number = 24;
 
 	function init(_event: Event): void {
 		let canvas: HTMLCanvasElement;
@@ -100,31 +100,19 @@ namespace Blumenwiese {
 		crc2.fill();
 	}
 
-	function drawFlower(_color: string, _x: number, _y: number, _blaetter: number, _circleColor: string): void {
-		// crc2.fillStyle = _color;
-		// crc2.fillRect(_x, _y, flowersize, flowersize);
-
+	function drawFlower(_color: string, _x: number, _y: number, _blaetter: number, _circleColor: string, _blattratio: number): void {
+			// blätter zeichnen
 		crc2.beginPath();
-	    // draw petals
 	    for (var n = 0; n < _blaetter; n++) {
+	    	let blattbreite: number = flowersize / _blattratio;
 	    	crc2.moveTo(_x, _y);
-	    	crc2.ellipse(_x, _y, 9, 6, (360/(_blaetter-n)) * Math.PI/180, 0, 2 * Math.PI)
-	        // var theta1 = ((Math.PI * 2) / _blaetter) * (n + 1);
-	        // var theta2 = ((Math.PI * 2) / _blaetter) * (n);
-	        
-	        // var x1 = (flowersize * Math.sin(theta1)) + _x;
-	        // var y1 = (flowersize * Math.cos(theta1)) + _y;
-	        // var x2 = (flowersize * Math.sin(theta2)) + _x;
-	        // var y2 = (flowersize * Math.cos(theta2)) + _y;
-	        
-	        
-	        // crc2.bezierCurveTo(x1, y1, x2, y2, _x, _y);
+	    	crc2.ellipse(_x, _y, flowersize, blattbreite, n*(360/_blaetter) * Math.PI/180, 0, 2 * Math.PI)
 	    }
 	    crc2.closePath();
 	    crc2.fillStyle = _color;
 	    crc2.fill();
 
-	     // draw yellow center
+	    	// punkt zeichnen
 	    crc2.beginPath();
 	    crc2.arc(_x, _y, flowersize / 5, 0, 2 * Math.PI, false);
 	    crc2.fillStyle = _circleColor;
@@ -132,18 +120,18 @@ namespace Blumenwiese {
 		}
 
 	function drawYellow(_x: number, _y: number, _height: number): void {
-		drawFlower("#EFD717", _x, _y+_height/2, 8, "#FFFFFF");
+		drawFlower("#EFD717", _x, _y+_height/2, 8, "#FFFFFF", 4);
 	}
 
 	function drawWhite(_x: number, _y: number, _height: number): void {
-		drawFlower("#FFFFFF", _x, _y+_height/2, 8, "#EFD717");		
+		drawFlower("#FFFFFF", _x, _y+_height/2, 7, "#EFD717", 8);		
 	}
 
 	function drawBlue(_x: number, _y: number, _height: number): void {
-		drawFlower("#11BAF9", _x, _y+_height/2, 8, "#FFFFFF");
+		drawFlower("#11BAF9", _x, _y+_height/2, 3, "#FFFFFF", 2);
 	}
 
 	function drawRed(_x: number, _y: number, _height: number): void {
-		drawFlower("#EF3017", _x, _y+_height/2, 8, "#FFFFFF");		
+		drawFlower("#EF3017", _x, _y+_height/2, 8, "#FFFFFF", 3);		
 	}
 }
