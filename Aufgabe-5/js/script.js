@@ -3,6 +3,10 @@ var Aufgabe5;
     window.addEventListener("load", init);
     var crc2;
     var flowersize = 24;
+    var beex = [];
+    var beey = [];
+    var bienen = 10;
+    var imgData;
     function init(_event) {
         var canvas;
         canvas = document.getElementsByTagName("canvas")[0];
@@ -55,10 +59,13 @@ var Aufgabe5;
             }
         }
         drawBienenkorb(670, 440);
-        for (var i = 0; i < 10; i++) {
-            drawBee(640, 410);
+        imgData = crc2.getImageData(0, 0, canvas.width, canvas.height); // Speichern der Landschaft
+        for (var i = 0; i < bienen; i++) {
+            beex[i] = 640;
+            beey[i] = 410;
         }
-        document.getElementsByClassName("canvas")[0].addEventListener("click", addBee);
+        window.setTimeout(animate, 20, canvas.width, canvas.height);
+        window.addEventListener("click", addBee);
     }
     function drawSky(_width, _height) {
         crc2.fillStyle = "#78BEE0";
@@ -138,10 +145,14 @@ var Aufgabe5;
         crc2.fillStyle = "#3D251C";
         crc2.fill();
     }
+    // Aufgabe 5
     function addBee(_event) {
-        // drawBee(_event.clientX, _event.clientY);
+        beex.push(640);
+        beey.push(410);
+        bienen++;
     }
     function drawBee(_x, _y) {
+        // Korpus
         crc2.beginPath();
         crc2.ellipse(_x, _y, 16, 10, 0, 0, 2 * Math.PI);
         crc2.closePath();
@@ -160,6 +171,7 @@ var Aufgabe5;
         gradient.addColorStop(1, "yellow");
         crc2.fillStyle = gradient;
         crc2.fill();
+        // Flügel
         crc2.beginPath();
         crc2.ellipse(_x + 2, _y - 10, 10, 6, .5 * Math.PI, 0, 2 * Math.PI);
         crc2.closePath();
@@ -176,6 +188,25 @@ var Aufgabe5;
         crc2.stroke();
         crc2.fillStyle = "#ffffff";
         crc2.fill();
+    }
+    function animate(_width, _height) {
+        crc2.putImageData(imgData, 0, 0); // Laden der Landschaft
+        for (var i = 0; i < bienen; i++) {
+            beex[i] += Math.floor(Math.random() * 6) - 3;
+            beey[i] += Math.random() * 4 - 2;
+            // Wieder Erscheinen beim Verlassen des Canvas
+            if (beex[i] < 0) {
+                beex[i] = _width;
+            }
+            if (beey[i] < 0) {
+                beey[i] = _height;
+            }
+            if (beey[i] > _height) {
+                beey[i] = 0;
+            }
+            drawBee(beex[i], beey[i]);
+        }
+        window.setTimeout(animate, 20, _width, _height);
     }
 })(Aufgabe5 || (Aufgabe5 = {}));
 //# sourceMappingURL=script.js.map

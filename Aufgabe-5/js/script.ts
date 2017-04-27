@@ -3,6 +3,11 @@ namespace Aufgabe5 {
 	let crc2: CanvasRenderingContext2D;
 	let flowersize: number = 24;
 
+	let beex : number[] = [];
+	let beey : number[] = [];
+	let bienen : number = 10;
+	let imgData: ImageData;
+
 	function init(_event: Event): void {
 		let canvas: HTMLCanvasElement;
         canvas = document.getElementsByTagName("canvas")[0];
@@ -60,12 +65,16 @@ namespace Aufgabe5 {
 		}
 
 		drawBienenkorb(670, 440);
-		for (let i: number = 0; i<10; i++) {
-			drawBee(640, 410);
+
+		imgData = crc2.getImageData(0, 0, canvas.width, canvas.height); // Speichern der Landschaft
+
+		for (let i: number = 0; i<bienen; i++) { 
+			beex[i] = 640;
+			beey[i] = 410;
 		}
 
-		document.getElementsByClassName("canvas")[0].addEventListener("click", addBee);
-
+		window.setTimeout(animate, 20, canvas.width, canvas.height);
+        window.addEventListener("click", addBee);
 	}
 
 	function drawSky(_width: number, _height: number): void {
@@ -160,11 +169,16 @@ namespace Aufgabe5 {
 
 	}
 
+	// Aufgabe 5
+
 	function addBee(_event: Event): void {
-		// drawBee(_event.clientX, _event.clientY);
+		beex.push(640);
+        beey.push(410);
+		bienen++;
 	}
 
 	function drawBee(_x: number, _y: number): void {
+			// Korpus
 		crc2.beginPath();
 		crc2.ellipse(_x, _y, 16, 10, 0, 0, 2*Math.PI);
 		crc2.closePath();
@@ -187,6 +201,7 @@ namespace Aufgabe5 {
 		crc2.fillStyle = gradient;
 		crc2.fill();
 
+			// Flügel
 		crc2.beginPath();
 		crc2.ellipse(_x+2, _y-10, 10, 6, .5 * Math.PI, 0, 2*Math.PI)
 		crc2.closePath();
@@ -204,5 +219,26 @@ namespace Aufgabe5 {
 		crc2.stroke();
 		crc2.fillStyle = "#ffffff";
 		crc2.fill();
+	}
+
+	function animate(_width: number, _height: number): void {
+		crc2.putImageData(imgData, 0, 0); // Laden der Landschaft
+		for (let i: number = 0; i < bienen; i++) { // Zufällige Bewegung der Bienen
+            beex[i] += Math.floor(Math.random() * 6) - 3;
+            beey[i] += Math.random() * 4 - 2;
+            	// Wieder Erscheinen beim Verlassen des Canvas
+            if(beex[i]<0){
+                beex[i] = _width;
+            }
+            if(beey[i]<0){
+                beey[i] = _height;
+            }
+            if(beey[i]>_height){
+                beey[i] = 0;
+            }
+            drawBee(beex[i], beey[i]);
+        }
+
+        window.setTimeout(animate, 20, _width, _height);
 	}
 }
