@@ -65,8 +65,8 @@ var Aufgabe5;
             beey[i] = 410;
         }
         window.setTimeout(animate, 20, canvas.width, canvas.height);
-        window.addEventListener("click", addBee);
-        window.addEventListener("touchstart", addBee);
+        canvas.addEventListener("click", addBee);
+        canvas.addEventListener("touchstart", addBee);
     }
     function drawSky(_width, _height) {
         crc2.fillStyle = "#78BEE0";

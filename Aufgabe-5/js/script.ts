@@ -74,8 +74,8 @@ namespace Aufgabe5 {
 		}
 
 		window.setTimeout(animate, 20, canvas.width, canvas.height);
-        window.addEventListener("click", addBee);
-        window.addEventListener("touchstart", addBee);
+        canvas.addEventListener("click", addBee);
+        canvas.addEventListener("touchstart", addBee);
 	}
 
 	function drawSky(_width: number, _height: number): void {
