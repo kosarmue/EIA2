@@ -25,24 +25,6 @@ namespace Aufgabe7 {
 		drawMountain(220, 180, canvas.height);
 		drawMountain(400, 240, canvas.height);
 
-		
-		flowers.push(new Flower(650, 710, "yellow"));
-		flowers.push(new Flower(100, 550, "yellow"));
-		flowers.push(new Flower(230, 600, "yellow"));
-		flowers.push(new Flower(300, 620, "yellow"));
-		flowers.push(new Flower(50, 580, "white"));
-		flowers.push(new Flower(500, 630, "white"));
-		flowers.push(new Flower(250, 520, "white"));
-		flowers.push(new Flower(410, 710, "white"));
-		flowers.push(new Flower(590, 550, "blue"));
-		flowers.push(new Flower(390, 535, "blue"));
-		flowers.push(new Flower(150, 720, "blue"));
-		flowers.push(new Flower(450, 600, "blue"));
-		flowers.push(new Flower(700, 520, "red"));
-		flowers.push(new Flower(540, 560, "red"));
-		flowers.push(new Flower(340, 680, "red"));
-		flowers.push(new Flower(170, 610, "red"));
-
 			// Random Flowers
 		for (let i: number = 0; i<flowernumber; i++) { 
 			x = Math.floor(Math.random() * (canvas.width - 0 + 1));
@@ -72,6 +54,23 @@ namespace Aufgabe7 {
 
 		imgData = crc2.getImageData(0, 0, canvas.width, canvas.height); // Speichern der Landschaft
 
+		flowers.push(new Flower(650, 710, "yellow"));
+		flowers.push(new Flower(100, 550, "yellow"));
+		flowers.push(new Flower(230, 600, "yellow"));
+		flowers.push(new Flower(300, 620, "yellow"));
+		flowers.push(new Flower(50, 580, "white"));
+		flowers.push(new Flower(500, 630, "white"));
+		flowers.push(new Flower(250, 520, "white"));
+		flowers.push(new Flower(410, 710, "white"));
+		flowers.push(new Flower(590, 550, "blue"));
+		flowers.push(new Flower(390, 535, "blue"));
+		flowers.push(new Flower(150, 720, "blue"));
+		flowers.push(new Flower(450, 600, "blue"));
+		flowers.push(new Flower(700, 520, "red"));
+		flowers.push(new Flower(540, 560, "red"));
+		flowers.push(new Flower(340, 680, "red"));
+		flowers.push(new Flower(170, 610, "red"));
+
 		for (let i: number = 0; i<bienen; i++) {
 			let b: Bee = new Bee(640, 610);
             bees[i] = b;
@@ -89,6 +88,10 @@ namespace Aufgabe7 {
 
 	function animate(_width: number, _height: number): void {
 		crc2.putImageData(imgData, 0, 0); // Laden der Landschaft
+		for (let i: number = 0; i < flowers.length; i++) {
+        	let f: Flower = flowers[i];
+        	f.draw();
+        }
 		for (let i: number = 0; i < bees.length; i++) { // Zufällige Bewegung der Bienen
 			let b: Bee = bees[i];
             b.update();

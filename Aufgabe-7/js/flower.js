@@ -5,36 +5,57 @@ var Aufgabe7;
             this.x = _x;
             this.y = _y;
             this.type = _type;
-            switch (_type) {
+            this.draw();
+        }
+        Flower.prototype.draw = function () {
+            var color;
+            var blaetter;
+            var circleColor;
+            var blattratio;
+            switch (this.type) {
                 case "yellow":
-                    this.draw("#EFD717", 8, "#FFFFFF", 4);
+                    color = "#EFD717";
+                    blaetter = 8;
+                    circleColor = "#FFFFFF";
+                    blattratio = 4;
+                    //this.draw("#EFD717", 8, "#FFFFFF", 4);
                     break;
                 case "white":
-                    this.draw("#FFFFFF", 7, "#EFD717", 8);
+                    color = "#FFFFFF";
+                    blaetter = 8;
+                    circleColor = "#EFD717";
+                    blattratio = 8;
+                    //this.draw("#FFFFFF", 8, "#EFD717", 8);
                     break;
                 case "blue":
-                    this.draw("#11BAF9", 3, "#FFFFFF", 2);
+                    color = "#11BAF9";
+                    blaetter = 3;
+                    circleColor = "#FFFFFF";
+                    blattratio = 2;
+                    //this.draw("#11BAF9", 3, "#FFFFFF", 2);
                     break;
                 default:
-                    this.draw("#EF3017", 8, "#FFFFFF", 3);
+                    color = "#EF3017";
+                    blaetter = 8;
+                    circleColor = "#FFFFFF";
+                    blattratio = 3;
+                    //this.draw("#EF3017", 8, "#FFFFFF", 3);
                     break;
             }
-        }
-        Flower.prototype.draw = function (_color, _blaetter, _circleColor, _blattratio) {
             // blätter zeichnen
             Aufgabe7.crc2.beginPath();
-            for (var n = 0; n < _blaetter; n++) {
-                var blattbreite = 24 / _blattratio;
+            for (var n = 0; n < blaetter; n++) {
+                var blattbreite = 24 / blattratio;
                 Aufgabe7.crc2.moveTo(this.x, this.y);
-                Aufgabe7.crc2.ellipse(this.x, this.y, 24, blattbreite, n * (360 / _blaetter) * Math.PI / 180, 0, 2 * Math.PI);
+                Aufgabe7.crc2.ellipse(this.x, this.y, 24, blattbreite, n * (360 / blaetter) * Math.PI / 180, 0, 2 * Math.PI);
             }
             Aufgabe7.crc2.closePath();
-            Aufgabe7.crc2.fillStyle = _color;
+            Aufgabe7.crc2.fillStyle = color;
             Aufgabe7.crc2.fill();
             // punkt zeichnen
             Aufgabe7.crc2.beginPath();
             Aufgabe7.crc2.arc(this.x, this.y, 24 / 5, 0, 2 * Math.PI, false);
-            Aufgabe7.crc2.fillStyle = _circleColor;
+            Aufgabe7.crc2.fillStyle = circleColor;
             Aufgabe7.crc2.fill();
         };
         return Flower;

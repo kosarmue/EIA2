@@ -18,22 +18,6 @@ var Aufgabe7;
         drawSun();
         drawMountain(220, 180, Aufgabe7.canvas.height);
         drawMountain(400, 240, Aufgabe7.canvas.height);
-        flowers.push(new Aufgabe7.Flower(650, 710, "yellow"));
-        flowers.push(new Aufgabe7.Flower(100, 550, "yellow"));
-        flowers.push(new Aufgabe7.Flower(230, 600, "yellow"));
-        flowers.push(new Aufgabe7.Flower(300, 620, "yellow"));
-        flowers.push(new Aufgabe7.Flower(50, 580, "white"));
-        flowers.push(new Aufgabe7.Flower(500, 630, "white"));
-        flowers.push(new Aufgabe7.Flower(250, 520, "white"));
-        flowers.push(new Aufgabe7.Flower(410, 710, "white"));
-        flowers.push(new Aufgabe7.Flower(590, 550, "blue"));
-        flowers.push(new Aufgabe7.Flower(390, 535, "blue"));
-        flowers.push(new Aufgabe7.Flower(150, 720, "blue"));
-        flowers.push(new Aufgabe7.Flower(450, 600, "blue"));
-        flowers.push(new Aufgabe7.Flower(700, 520, "red"));
-        flowers.push(new Aufgabe7.Flower(540, 560, "red"));
-        flowers.push(new Aufgabe7.Flower(340, 680, "red"));
-        flowers.push(new Aufgabe7.Flower(170, 610, "red"));
         // Random Flowers
         for (var i = 0; i < flowernumber; i++) {
             x = Math.floor(Math.random() * (Aufgabe7.canvas.width - 0 + 1));
@@ -59,6 +43,22 @@ var Aufgabe7;
         console.log(flowers);
         drawBienenkorb(670, 640);
         imgData = Aufgabe7.crc2.getImageData(0, 0, Aufgabe7.canvas.width, Aufgabe7.canvas.height); // Speichern der Landschaft
+        flowers.push(new Aufgabe7.Flower(650, 710, "yellow"));
+        flowers.push(new Aufgabe7.Flower(100, 550, "yellow"));
+        flowers.push(new Aufgabe7.Flower(230, 600, "yellow"));
+        flowers.push(new Aufgabe7.Flower(300, 620, "yellow"));
+        flowers.push(new Aufgabe7.Flower(50, 580, "white"));
+        flowers.push(new Aufgabe7.Flower(500, 630, "white"));
+        flowers.push(new Aufgabe7.Flower(250, 520, "white"));
+        flowers.push(new Aufgabe7.Flower(410, 710, "white"));
+        flowers.push(new Aufgabe7.Flower(590, 550, "blue"));
+        flowers.push(new Aufgabe7.Flower(390, 535, "blue"));
+        flowers.push(new Aufgabe7.Flower(150, 720, "blue"));
+        flowers.push(new Aufgabe7.Flower(450, 600, "blue"));
+        flowers.push(new Aufgabe7.Flower(700, 520, "red"));
+        flowers.push(new Aufgabe7.Flower(540, 560, "red"));
+        flowers.push(new Aufgabe7.Flower(340, 680, "red"));
+        flowers.push(new Aufgabe7.Flower(170, 610, "red"));
         for (var i = 0; i < bienen; i++) {
             var b = new Aufgabe7.Bee(640, 610);
             bees[i] = b;
@@ -73,6 +73,10 @@ var Aufgabe7;
     }
     function animate(_width, _height) {
         Aufgabe7.crc2.putImageData(imgData, 0, 0); // Laden der Landschaft
+        for (var i = 0; i < flowers.length; i++) {
+            var f = flowers[i];
+            f.draw();
+        }
         for (var i = 0; i < bees.length; i++) {
             var b = bees[i];
             b.update();
