@@ -1,11 +1,11 @@
-namespace Aufgabe7 {
+namespace Aufgabe8 {
 	window.addEventListener("load", init);
 	export let crc2: CanvasRenderingContext2D;
 	export let canvas: HTMLCanvasElement;
 	let flowersize: number = 24;
 
-	let bees : Bee[] = [];
-	let flowers : Flower[] = [];
+	let bees : any[] = [];
+	export let flowers : Flower[] = [];
 	let bienen : number = 10;
 	let imgData: ImageData;
 
@@ -32,16 +32,16 @@ namespace Aufgabe7 {
 				// Math.floor(Math.random() * (max - min + 1)) + min;
 			switch (Math.floor((Math.random() * 4) + 0)) {
 				case 0:
-					new Flower(x, y, "yellow");
+					new YellowFlower(x, y);
 					break;
 				case 1:
-					new Flower(x, y, "white");
+					new WhiteFlower(x, y);
 					break;
 				case 2:
-					new Flower(x, y, "blue");
+					new BlueFlower(x, y);
 					break;
 				case 3:
-					new Flower(x, y, "red");
+					new RedFlower(x, y);
 					break;
 				default:
 					break;
@@ -54,27 +54,34 @@ namespace Aufgabe7 {
 
 		imgData = crc2.getImageData(0, 0, canvas.width, canvas.height); // Speichern der Landschaft
 
-		flowers.push(new Flower(650, 710, "yellow"));
-		flowers.push(new Flower(100, 550, "yellow"));
-		flowers.push(new Flower(230, 600, "yellow"));
-		flowers.push(new Flower(300, 620, "yellow"));
-		flowers.push(new Flower(50, 580, "white"));
-		flowers.push(new Flower(500, 630, "white"));
-		flowers.push(new Flower(250, 520, "white"));
-		flowers.push(new Flower(410, 710, "white"));
-		flowers.push(new Flower(590, 550, "blue"));
-		flowers.push(new Flower(390, 535, "blue"));
-		flowers.push(new Flower(150, 720, "blue"));
-		flowers.push(new Flower(450, 600, "blue"));
-		flowers.push(new Flower(700, 520, "red"));
-		flowers.push(new Flower(540, 560, "red"));
-		flowers.push(new Flower(340, 680, "red"));
-		flowers.push(new Flower(170, 610, "red"));
+		flowers.push(new YellowFlower(650, 710));
+		flowers.push(new YellowFlower(100, 550));
+		flowers.push(new YellowFlower(230, 600));
+		flowers.push(new YellowFlower(300, 620));
+		flowers.push(new WhiteFlower(50, 580));
+		flowers.push(new WhiteFlower(500, 630));
+		flowers.push(new WhiteFlower(250, 520));
+		flowers.push(new WhiteFlower(410, 710));
+		flowers.push(new BlueFlower(590, 550));
+		flowers.push(new BlueFlower(390, 535));
+		flowers.push(new BlueFlower(150, 720));
+		flowers.push(new BlueFlower(450, 600));
+		flowers.push(new RedFlower(700, 520));
+		flowers.push(new RedFlower(540, 560));
+		flowers.push(new RedFlower(340, 680));
+		flowers.push(new RedFlower(170, 610));
 
 		for (let i: number = 0; i<bienen; i++) {
-			let b: Bee = new Bee(640, 610);
-            bees[i] = b;
+			if (i%2==0) {
+				let b: Bee = new Bee(640, 610);
+				bees.push(b)
+			}
+			else {
+				let hb: HoneyBee = new HoneyBee(640, 610);
+				bees.push(hb)
+			}
 		}
+		console.log(bees);
 
 		window.setTimeout(animate, 20, canvas.width, canvas.height);
         canvas.addEventListener("click", addBee);
@@ -83,17 +90,35 @@ namespace Aufgabe7 {
 
 	function addBee(_event: Event): void {
 		let b: Bee = new Bee(640, 610);
-		bees.push(b)
+		bees.push(b);
 	}
 
 	function animate(_width: number, _height: number): void {
 		crc2.putImageData(imgData, 0, 0); // Laden der Landschaft
 		for (let i: number = 0; i < flowers.length; i++) {
-        	let f: Flower = flowers[i];
-        	f.draw();
+			switch (flowers[i].type) {
+				case "yellow":
+					let fy: YellowFlower = new YellowFlower(flowers[i].x, flowers[i].y);
+					fy.draw();
+					break;
+				case "white":
+					let fw: WhiteFlower = new WhiteFlower(flowers[i].x, flowers[i].y);
+					fw.draw();
+					break;
+				case "blue":
+					let fb: BlueFlower = new BlueFlower(flowers[i].x, flowers[i].y);
+					fb.draw();
+					break;
+				case "red":
+					let fr: RedFlower = new RedFlower(flowers[i].x, flowers[i].y);
+					fr.draw();
+					break;
+				default:
+					break;
+			}
         }
 		for (let i: number = 0; i < bees.length; i++) { // Zufällige Bewegung der Bienen
-			let b: Bee = bees[i];
+			let b: any = bees[i];
             b.update();
         }
 

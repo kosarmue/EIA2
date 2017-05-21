@@ -1,9 +1,11 @@
-namespace Aufgabe7 {
+namespace Aufgabe8 {
 	export class Bee {
 		x : number;
 		y : number;
 		color : string;
 		bluewings : boolean;
+		targetx : number;
+		targety : number;
 
 		constructor(_x: number, _y: number) {
 			this.setColor();
