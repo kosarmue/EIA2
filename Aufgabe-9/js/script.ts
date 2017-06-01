@@ -6,7 +6,9 @@ namespace Aufgabe_9 {
 	let conecup: string[] = ["cone", "cup"]
 	let shippingmethods: string[] = ["standard", "premium", "express"]
 	let fieldsets: NodeListOf<HTMLFieldSetElement> = document.getElementsByTagName("fieldset")
-	let sum: number = 0;
+	let flavorinputs: HTMLInputElement[] = [];
+	let toppinginputs: HTMLInputElement[] = [];
+	let shippinginputs: HTMLInputElement[] = [];
 
 	function init(_event: Event): void {
 		createFlavors();
@@ -18,17 +20,62 @@ namespace Aufgabe_9 {
 		}
 	}
 
-	function change(_event: Event): void {
-		
+	function change(_event: Event): void {	
+		document.getElementById("output").removeChild(document.getElementById("ordersummary"));
+		let sum: number = 0;
 		let target: HTMLInputElement = <HTMLInputElement>_event.target;
-		if((target.type == "checkbox") && (target.checked)) {
-			sum++
+		for (let i = 0; i < flavorinputs.length; i++) {
+			sum += parseFloat(flavorinputs[i].value);
 		}
-		sum += -1*(parseFloat(target.defaultValue) - parseFloat(target.value));
 
-		console.log("Changed " + target.name + " from " + target.defaultValue + " to " + target.value);
+		for (let i = 0; i < toppinginputs.length; i++) {
+			if (toppinginputs[i].checked) {
+				sum += .5;
+			}
+		}
+
+		for (let i = 0; i < shippinginputs.length; i++) {
+			if (shippinginputs[i].checked) {
+				sum += (i+1)*2;
+			}
+		}
+
+		console.log("Changed " + target.name + " to " + target.value);
 		console.log(sum);
-		target.defaultValue = target.value;
+
+		displayOrder();
+	}
+
+	function displayOrder(): void {
+		let table : HTMLTableElement = document.createElement("table");
+		table.id = "ordersummary";
+		for (let i = 0; i < flavorinputs.length; i++) {
+			if (parseFloat(flavorinputs[i].value) != 0) {
+				table.appendChild(document.createElement("tr"));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode(flavors[i])));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode(flavorinputs[i].value + " x 1€")));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode("= " + flavorinputs[i].value + ",00 €")));
+			}
+		}
+		table.appendChild(document.createElement("tr"));
+		for (let i = 0; i < toppinginputs.length; i++) {
+			if (toppinginputs[i].checked) {
+				table.appendChild(document.createElement("tr"));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode(toppings[i])));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode("")));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode("+ 0,50€")));
+			}
+		}
+		table.appendChild(document.createElement("tr"));
+		for (let i = 0; i < shippinginputs.length; i++) {
+			if (shippinginputs[i].checked) {
+				table.appendChild(document.createElement("tr"));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode(shippingmethods[i])));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode("")));
+				table.lastChild.appendChild(document.createElement("td").appendChild(document.createTextNode((i+1)*2 + "€")));
+			}
+		}
+		document.getElementById("output").appendChild(table);
 	}
 
 	function createFlavors(): void {
@@ -45,6 +92,7 @@ namespace Aufgabe_9 {
 			input.min = "0";
 			input.max = "10";
 			document.getElementById("flavor").appendChild(input);
+			flavorinputs.push(input);
 		}
 	}
 
@@ -59,6 +107,7 @@ namespace Aufgabe_9 {
 			label.appendChild(input);
 			label.appendChild(document.createTextNode(toppings[i]));
 			document.getElementById("topping").appendChild(label);
+			toppinginputs.push(input);
 		}
 	}
 
@@ -87,6 +136,7 @@ namespace Aufgabe_9 {
 			label.appendChild(input);
 			label.appendChild(document.createTextNode(shippingmethods[i]));
 			document.getElementById("shipping").appendChild(label);
+			shippinginputs.push(input);
 		}
 	}
 }

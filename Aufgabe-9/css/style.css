@@ -15,6 +15,18 @@ input {
 	clear: left;
 }
 
+input:invalid {
+	background: red;
+} 
+
+input:valid {
+	background: white;
+}
+
+input:required {
+	background: white;
+}
+
 h1 {
 	font-family: Helvetica, 'sans-serif';
 }
@@ -28,4 +40,5 @@ legend {
 	font-size: 1em;
 	font-family: Helvetica, 'sans-serif';
 }
+
 
