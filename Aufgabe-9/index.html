@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 9
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 21. Mai 2017
+Datum: 3. Juni 2017
 	
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 -->
@@ -16,44 +16,54 @@ Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde n
 	<title></title>
 </head>
 <body>
-	<h1>Eisdealer</h1>
-	<fieldset id ="flavor">
-		<legend>Flavor</legend>
-	</fieldset>
-	<fieldset id ="conecup">
-		<legend>Cone or cup</legend>
-	</fieldset>
-	<fieldset id ="topping">
-		<legend>Toppings (+0,50€ each)</legend>
-	</fieldset>
-	<fieldset id ="shipping">
-		<legend>Shipping method</legend>
-	</fieldset>
-	<fieldset id ="adress">
-		<legend>Adress</legend>
-		<input type="text" name="name" placeholder="Name" required/>
-		<hr/>
-		<input type="text" name="adress1" placeholder="Adress line 1" required/>
-		<hr/>
-		<input type="text" name="adress2" placeholder="Adress line 2 (optional)"/>
-		<hr/>
-		<input type="text" name="zipcode" pattern="[0-9]{5}" placeholder="Postal Code" required/>
-		<hr/>
-		<select name="country">
-			<option value="">Country</option>
-			<option value="DE">Deutschland</option>
-			<option value="AU">Österreich</option>
-			<option value="CH">Schweiz</option>
-		</select>
-		<hr>
-		<input type="email" name="mail" placeholder="E-Mail" required/>
-		<hr/>
-	</fieldset>
-	<div id="output">
-		<h2>Your order</h2>
-		<p id="flavors"></p>
-		<table id="ordersummary"></table>
-		<button id="verify">Verify order</button>
-	</div>
+	<header>
+		<div>
+			<h1>Eisdealer</h1>
+		</div>
+	</header>
+	<main>
+		<form>
+			<div class="column">
+			<fieldset id ="flavor">
+				<legend>FLAVOR</legend>
+			</fieldset>
+			<fieldset id ="conecup">
+				<legend>CONE OR CUP</legend>
+			</fieldset>
+			<fieldset id ="topping">
+				<legend>TOPPINGS</legend>
+			</fieldset>
+			</div>
+			<div class="column">
+			<fieldset id ="shipping">
+				<legend>SHIPPING METHOD</legend>
+			</fieldset>
+			<fieldset id ="adress">
+				<legend>ADRESS</legend>
+				<input type="text" name="name" placeholder="Name" class="required"/>
+				<input type="text" name="adress1" placeholder="Adress line 1" class="required"/>
+				<input type="text" name="adress2" placeholder="Adress line 2 (optional)"/>
+				<input type="text" name="zipcode" pattern="[0-9]{5}" placeholder="Postal Code" class="required"/>
+				<select name="country" class="required">
+					<option value="">Country</option>
+					<option value="DE">Germany</option>
+					<option value="AU">Austria</option>
+					<option value="CH">Schwitzerland</option>
+				</select>
+				<input type="email" name="mail" placeholder="E-Mail" class="required"/>
+			</fieldset>
+			</div>
+		</form>
+		<div class="column">
+		<div id="output">
+			<h2>YOUR ORDER</h2>
+			<div id="order">
+				<table id="ordersummary"></table>
+			</div>
+			<button id="verify">Verify order</button>
+			<div id="alert"></div>
+		</div>
+		</div>
+	</main>
 </body>
 </html>
