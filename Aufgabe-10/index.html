@@ -2,7 +2,7 @@
 Aufgabe: Aufgabe 10
 Name: Kai Halfinger
 Matrikel: 254872
-Datum: 18. Juni 2017
+Datum: 23. Juni 2017
 	
 Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
 -->
@@ -22,6 +22,7 @@ Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde n
 		</div>
 	</header>
 	<main>
+	<!-- https://eia2-kaihalfinger.herokuapp.com -->
 		<form action="https://eia2-kaihalfinger.herokuapp.com" method="get">
 			<div class="column">
 			<fieldset id ="flavor">
@@ -44,11 +45,12 @@ Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde n
 				<input type="text" name="adress1" placeholder="Adress line 1" class="required"/>
 				<input type="text" name="adress2" placeholder="Adress line 2 (optional)"/>
 				<input type="text" name="zipcode" pattern="[0-9]{5}" placeholder="Postal Code" class="required"/>
+				<input type="text" name="city" placeholder="City" class="required"/>
 				<select name="country" class="required">
 					<option value="">Country</option>
-					<option value="DE">Germany</option>
-					<option value="AU">Austria</option>
-					<option value="CH">Schwitzerland</option>
+					<option value="Germany">Germany</option>
+					<option value="Austria">Austria</option>
+					<option value="Switzerland">Schwitzerland</option>
 				</select>
 				<input type="email" name="mail" placeholder="E-Mail" class="required"/>
 			</fieldset>

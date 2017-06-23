@@ -1,5 +1,5 @@
-var Aufgabe_9;
-(function (Aufgabe_9) {
+var Aufgabe_10;
+(function (Aufgabe_10) {
     window.addEventListener("load", init);
     var flavors = ["Chocolate", "Strawberry", "Raspberry", "Blueberry", "Vanilla", "Mango", "Stracciatella"];
     var toppings = ["Chocolate syrup", "Caramel syrup", "Chocolate Chips", "Rainbow sprinkles", "Cookie", "Cinnamon"];
@@ -146,12 +146,12 @@ var Aufgabe_9;
         return sum.toLocaleString(undefined, { minimumFractionDigits: 2 });
     }
     function createFlavors() {
-        for (var i = 0; i < toppings.length; i++) {
+        for (var i = 0; i < flavors.length; i++) {
             var label = document.createElement("label");
             label.appendChild(document.createTextNode(flavors[i]));
             var input = document.createElement("input");
             input.type = "number";
-            input.name = "flavor";
+            input.name = flavors[i];
             input.id = flavors[i];
             input.defaultValue = "0";
             input.step = "1";
@@ -159,7 +159,6 @@ var Aufgabe_9;
             input.max = "10";
             label.appendChild(input);
             document.getElementById("flavor").appendChild(label);
-            // document.getElementById("flavor").appendChild(document.createElement("br"));
             flavorinputs.push(input);
         }
     }
@@ -167,7 +166,7 @@ var Aufgabe_9;
         for (var i = 0; i < toppings.length; i++) {
             var input = document.createElement("input");
             input.type = "checkbox";
-            input.name = "topping";
+            input.name = toppings[i];
             input.id = toppings[i];
             input.value = toppings[i];
             var label = document.createElement("label");
@@ -205,5 +204,5 @@ var Aufgabe_9;
             shippinginputs.push(input);
         }
     }
-})(Aufgabe_9 || (Aufgabe_9 = {}));
+})(Aufgabe_10 || (Aufgabe_10 = {}));
 //# sourceMappingURL=script.js.map

@@ -1,4 +1,4 @@
-namespace Aufgabe_9 {
+namespace Aufgabe_10 {
 	window.addEventListener("load", init);
 
 	let flavors: string[] = ["Chocolate", "Strawberry", "Raspberry", "Blueberry", "Vanilla", "Mango", "Stracciatella"]
@@ -153,12 +153,12 @@ namespace Aufgabe_9 {
 	}
 
 	function createFlavors(): void {
-		for (let i = 0; i < toppings.length; i++) {
+		for (let i = 0; i < flavors.length; i++) {
 			let label : HTMLLabelElement = document.createElement("label");
 			label.appendChild(document.createTextNode(flavors[i]));
 			let input : HTMLInputElement = document.createElement("input");
 			input.type = "number";
-			input.name = "flavor"
+			input.name = flavors[i]
 			input.id = flavors[i];
 			input.defaultValue = "0";
 			input.step = "1";
@@ -166,7 +166,6 @@ namespace Aufgabe_9 {
 			input.max = "10";
 			label.appendChild(input);
 			document.getElementById("flavor").appendChild(label);
-			// document.getElementById("flavor").appendChild(document.createElement("br"));
 			flavorinputs.push(input);
 		}
 	}
@@ -175,7 +174,7 @@ namespace Aufgabe_9 {
 		for (let i = 0; i < toppings.length; i++) {
 			let input : HTMLInputElement = document.createElement("input");
 			input.type = "checkbox";
-			input.name = "topping";
+			input.name = toppings[i];
 			input.id = toppings[i];
 			input.value = toppings[i];
 			let label : HTMLLabelElement = document.createElement("label");
