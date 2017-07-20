@@ -2,6 +2,7 @@ namespace Abschlussaufgabe {
 	let canvas: HTMLCanvasElement;
 	canvas = document.getElementsByTagName("canvas")[0];
 
+// Klasse für Spielerobjekt
 	class Player {
 		width : number;
 		height : number;
@@ -41,6 +42,8 @@ namespace Abschlussaufgabe {
 
 	}
 
+
+// Klasse für Obstacles
 	class Obstacle {
 		width : number;
 		height : number;
@@ -94,6 +97,7 @@ namespace Abschlussaufgabe {
 
 	}
 
+// Klasse für Bonuspunktobjekte
 	class Bonus {
 		width : number;
 		height : number;
@@ -123,35 +127,28 @@ namespace Abschlussaufgabe {
 		}
 	}
 
-	// class points extends Bonus {
-
-	// }
-
-	// class speed extends Bonus {
-
-	// }
-
 	window.addEventListener("load", init);
 	let crc2: CanvasRenderingContext2D;
 
 	let playerrect : Player;
 	let obstacles : Obstacle[] = [];
-	// let speedbonus : speed[] = [];
 	let bonuspoints : Bonus[] = [];
 	let gameduration : number = 0;
 	let score : number = 0;
 
+
+// Funktion zum Erstellen des Spiels
 	function init(_event: Event): void {
 		let canvas: HTMLCanvasElement;
         canvas = document.getElementsByTagName("canvas")[0];
 		crc2 = canvas.getContext("2d");
 
-		crc2.fillStyle = "#000";
+		crc2.fillStyle = "#000"; // Zeichnet schwarzen Hintergrund
 		crc2.fillRect(0, 0, canvas.width, canvas.height);
 
-		playerrect = new Player(canvas.width, canvas.height);
+		playerrect = new Player(canvas.width, canvas.height); // Erstellt Spieler
 
-		for (let i = 0; i < 8; i++) {
+		for (let i = 0; i < 8; i++) { // Erzeugt 8 Obstacles
 			obstacles.push(new Obstacle(canvas.width, canvas.height));
 		}
 
@@ -159,27 +156,24 @@ namespace Abschlussaufgabe {
 		window.setTimeout(animate, 20, canvas.width, canvas.height);
 	}
 
+// Verarbeiten von Tastendrückern
 	function keypress(_event : KeyboardEvent): void {
 		switch (_event.keyCode) {
 			case 38: // up
-				if (playerrect.y < 7) {playerrect.y = 0;}
+				if (playerrect.y < 7) {playerrect.y = 0;} // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
 				else {playerrect.y -= playerrect.speed;}
-			 	console.log("up");
 			 	break;
 			case 40: // down
 				if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
 				else {playerrect.y += playerrect.speed;}
-			 	console.log("down");
 			 	break;
 			case 37: // left
 				if (playerrect.x < 7) {playerrect.x = 0;}
 				else {playerrect.x -= playerrect.speed;}
-			 	console.log("left");
 			 	break;
 			case 39: // right
 				if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
 				else {playerrect.x += playerrect.speed;}
-			 	console.log("right");
 			 	break;
 			default: 
 				break;
@@ -214,29 +208,33 @@ namespace Abschlussaufgabe {
         obstacles.splice(_position,1);
     }
 
+// Funktion, die jeden Frame zeichnet
 	function animate(_width: number, _height: number): void {
-		crc2.fillStyle = "#000";
+		crc2.fillStyle = "#000"; // Zeichnet Hintergrund
 		crc2.fillRect(0, 0, _width, _height);
 
-		playerrect.draw();
+		playerrect.draw(); // Zeichnet Spieler
 
-		gameduration += 20;
+		gameduration += 20; // Zählt Zeit mit
 
-		manageObstacle(_width, _height);
-		manageBonusPoints(_width, _height);
+		manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
+		manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
 
-		if (gameduration%1000==0) {
+		if (gameduration%1000==0) { // Erhöht den Score jede Sekunde um 1
 			score++;
 		}
-		document.getElementById("score").textContent = "Your score: " + score.toString();
+		document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
 
 
 
-		for (let i = 0; i < obstacles.length; i++) {
+		for (let i = 0; i < obstacles.length; i++) { // Bewegt Obstacles und zeichnet sie neu
 			obstacles[i].update(_width, _height);
 		}
 
-		window.setTimeout(animate, 20, _width, _height);
+		window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
+
+
+// Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
 
 		// for (let i = 0; i < obstacles.length; i++) {
   //           if (playerrect.crashWith(obstacles[i])) {

@@ -2,6 +2,7 @@ var Abschlussaufgabe;
 (function (Abschlussaufgabe) {
     var canvas;
     canvas = document.getElementsByTagName("canvas")[0];
+    // Klasse für Spielerobjekt
     var Player = (function () {
         function Player(_width, _height) {
             this.width = 30;
@@ -31,6 +32,7 @@ var Abschlussaufgabe;
         };
         return Player;
     }());
+    // Klasse für Obstacles
     var Obstacle = (function () {
         function Obstacle(_width, _height) {
             do {
@@ -84,6 +86,7 @@ var Abschlussaufgabe;
         };
         return Obstacle;
     }());
+    // Klasse für Bonuspunktobjekte
     var Bonus = (function () {
         function Bonus(_width, _height) {
             this.width = 12;
@@ -105,41 +108,37 @@ var Abschlussaufgabe;
         };
         return Bonus;
     }());
-    // class points extends Bonus {
-    // }
-    // class speed extends Bonus {
-    // }
     window.addEventListener("load", init);
     var crc2;
     var playerrect;
     var obstacles = [];
-    // let speedbonus : speed[] = [];
     var bonuspoints = [];
     var gameduration = 0;
     var score = 0;
+    // Funktion zum Erstellen des Spiels
     function init(_event) {
         var canvas;
         canvas = document.getElementsByTagName("canvas")[0];
         crc2 = canvas.getContext("2d");
-        crc2.fillStyle = "#000";
+        crc2.fillStyle = "#000"; // Zeichnet schwarzen Hintergrund
         crc2.fillRect(0, 0, canvas.width, canvas.height);
-        playerrect = new Player(canvas.width, canvas.height);
+        playerrect = new Player(canvas.width, canvas.height); // Erstellt Spieler
         for (var i = 0; i < 8; i++) {
             obstacles.push(new Obstacle(canvas.width, canvas.height));
         }
         document.addEventListener("keydown", keypress, false);
         window.setTimeout(animate, 20, canvas.width, canvas.height);
     }
+    // Verarbeiten von Tastendrückern
     function keypress(_event) {
         switch (_event.keyCode) {
             case 38:
                 if (playerrect.y < 7) {
                     playerrect.y = 0;
-                }
+                } // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
                 else {
                     playerrect.y -= playerrect.speed;
                 }
-                console.log("up");
                 break;
             case 40:
                 if (playerrect.y + playerrect.height > 750 - 7) {
@@ -148,7 +147,6 @@ var Abschlussaufgabe;
                 else {
                     playerrect.y += playerrect.speed;
                 }
-                console.log("down");
                 break;
             case 37:
                 if (playerrect.x < 7) {
@@ -157,7 +155,6 @@ var Abschlussaufgabe;
                 else {
                     playerrect.x -= playerrect.speed;
                 }
-                console.log("left");
                 break;
             case 39:
                 if (playerrect.x + playerrect.width > 750 - 7) {
@@ -166,7 +163,6 @@ var Abschlussaufgabe;
                 else {
                     playerrect.x += playerrect.speed;
                 }
-                console.log("right");
                 break;
             default:
                 break;
@@ -197,21 +193,23 @@ var Abschlussaufgabe;
     function deleteObstacle(_position) {
         obstacles.splice(_position, 1);
     }
+    // Funktion, die jeden Frame zeichnet
     function animate(_width, _height) {
-        crc2.fillStyle = "#000";
+        crc2.fillStyle = "#000"; // Zeichnet Hintergrund
         crc2.fillRect(0, 0, _width, _height);
-        playerrect.draw();
-        gameduration += 20;
-        manageObstacle(_width, _height);
-        manageBonusPoints(_width, _height);
+        playerrect.draw(); // Zeichnet Spieler
+        gameduration += 20; // Zählt Zeit mit
+        manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
+        manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
         if (gameduration % 1000 == 0) {
             score++;
         }
-        document.getElementById("score").textContent = "Your score: " + score.toString();
+        document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
         for (var i = 0; i < obstacles.length; i++) {
             obstacles[i].update(_width, _height);
         }
-        window.setTimeout(animate, 20, _width, _height);
+        window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
+        // Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
         // for (let i = 0; i < obstacles.length; i++) {
         //           if (playerrect.crashWith(obstacles[i])) {
         //               // ENDE          
