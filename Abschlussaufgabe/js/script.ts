@@ -7,12 +7,14 @@ namespace Abschlussaufgabe {
 		height : number;
 		x : number;
 		y : number;
+		speed : number;
 
 		constructor(_width : number, _height : number) {
 			this.width = 30;
 			this.height = 30;
 			this.x = _width/2-(this.width/2);
 			this.y = _height/2-(this.height/2);
+			this.speed = 8;
 			this.draw();
 		}
 
@@ -29,13 +31,13 @@ namespace Abschlussaufgabe {
 			return crash;
 		}
 
-		// crashWithGhost(_obj): boolean {
-		// 	let crash = true;
-		// 	if (this.y+35+this.height < _obj.y || this.y-35 > _obj.y+_obj.height || this.x+35+this.width < _obj.x || this.x-35 > _obj.x+_obj.width) {
-		// 		crash = false;
-		// 	}
-		// 	return crash;
-		// }
+		crashWithGhost(_obj): boolean {
+			let crash = true;
+			if (this.y+50+this.height < _obj.y || this.y-50 > _obj.y+_obj.height || this.x+50+this.width < _obj.x || this.x-50 > _obj.x+_obj.width) {
+				crash = false;
+			}
+			return crash;
+		}
 
 	}
 
@@ -50,13 +52,13 @@ namespace Abschlussaufgabe {
 
 
 		constructor(_width : number, _height : number) {			
-			// do {
+			do {
 			this.width = Math.round(Math.random()*100+30);
 			this.height = Math.round(Math.random()*100+30);
 			this.x = Math.round(Math.random()*(_width-this.width));
-			this.y = Math.round(Math.random()*(_height-this.height))
-			// }
-			// while(playerrect.crashWithGhost(obstacles[obstacles.length-1]));
+			this.y = Math.round(Math.random()*(_height-this.height));
+			}
+			while(playerrect.crashWithGhost(this));
 			this.speed = Math.round(Math.random()+1);
 			this.direction = Math.round(Math.random());
 			this.switchDirection = Math.round(Math.random());
@@ -92,17 +94,40 @@ namespace Abschlussaufgabe {
 
 	}
 
-	// class bonus {
-	// 	x : number;
-	// 	y : number;
+	class Bonus {
+		width : number;
+		height : number;
+		x : number;
+		y : number;
+
+		constructor(_width : number, _height : number) {
+			this.width = 12;
+			this.height = 12;
+			this.x = Math.round(Math.random()*(_width-this.width));
+			this.y = Math.round(Math.random()*(_height-this.height));
+
+			this.draw();
+		}
+
+		draw(): void {
+			crc2.fillStyle = "#39D530";
+			crc2.fillRect(this.x, this.y, this.width, this.height);
+		}
+
+		collected(_obj): boolean {
+			let collected = true;
+			if (this.y+this.height < _obj.y || this.y > _obj.y+_obj.height || this.x+this.width < _obj.x || this.x > _obj.x+_obj.width) {
+				collected = false;
+			}
+			return collected;
+		}
+	}
+
+	// class points extends Bonus {
 
 	// }
 
-	// class points extends bonus {
-
-	// }
-
-	// class speed extends bonus {
+	// class speed extends Bonus {
 
 	// }
 
@@ -112,7 +137,7 @@ namespace Abschlussaufgabe {
 	let playerrect : Player;
 	let obstacles : Obstacle[] = [];
 	// let speedbonus : speed[] = [];
-	// let pointbonus : points[] = [];
+	let bonuspoints : Bonus[] = [];
 	let gameduration : number = 0;
 	let score : number = 0;
 
@@ -138,28 +163,52 @@ namespace Abschlussaufgabe {
 		switch (_event.keyCode) {
 			case 38: // up
 				if (playerrect.y < 7) {playerrect.y = 0;}
-				else {playerrect.y -= 6;}
+				else {playerrect.y -= playerrect.speed;}
 			 	console.log("up");
 			 	break;
 			case 40: // down
 				if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
-				else {playerrect.y += 6;}
+				else {playerrect.y += playerrect.speed;}
 			 	console.log("down");
 			 	break;
 			case 37: // left
 				if (playerrect.x < 7) {playerrect.x = 0;}
-				else {playerrect.x -= 6;}
+				else {playerrect.x -= playerrect.speed;}
 			 	console.log("left");
 			 	break;
 			case 39: // right
 				if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
-				else {playerrect.x += 6;}
+				else {playerrect.x += playerrect.speed;}
 			 	console.log("right");
 			 	break;
 			default: 
 				break;
 		}
 	}
+
+	function manageBonusPoints(_width: number, _height: number): void{
+        if((gameduration % 2000 == 0)&&(Math.random()<0.3)&&(bonuspoints.length<10)){
+            bonuspoints.push(new Bonus(_width,_height));          
+        }
+        for (let i = 0; i < bonuspoints.length; i++) {
+            bonuspoints[i].draw();
+        }
+        for (let i = 0; i < bonuspoints.length; i++) {
+            if(bonuspoints[i].collected(playerrect)){
+                score += 15;
+                bonuspoints.splice(i,1);
+            }
+        }
+    }
+
+	function manageObstacle(_width: number, _height: number): void {
+        if ((gameduration % 2000 == 0)&&(Math.random()<0.3)) {
+            obstacles.push(new Obstacle(_width, _height));
+            if((Math.random()<0.5)||(obstacles.length>16)){
+                deleteObstacle(Math.round(Math.random()*(obstacles.length-1)));
+            }
+        }
+    }
 
 	function deleteObstacle(_position): void {
         obstacles.splice(_position,1);
@@ -172,6 +221,16 @@ namespace Abschlussaufgabe {
 		playerrect.draw();
 
 		gameduration += 20;
+
+		manageObstacle(_width, _height);
+		manageBonusPoints(_width, _height);
+
+		if (gameduration%1000==0) {
+			score++;
+		}
+		document.getElementById("score").textContent = "Your score: " + score.toString();
+
+
 
 		for (let i = 0; i < obstacles.length; i++) {
 			obstacles[i].update(_width, _height);

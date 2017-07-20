@@ -8,6 +8,7 @@ var Abschlussaufgabe;
             this.height = 30;
             this.x = _width / 2 - (this.width / 2);
             this.y = _height / 2 - (this.height / 2);
+            this.speed = 8;
             this.draw();
         }
         Player.prototype.draw = function () {
@@ -21,17 +22,23 @@ var Abschlussaufgabe;
             }
             return crash;
         };
+        Player.prototype.crashWithGhost = function (_obj) {
+            var crash = true;
+            if (this.y + 50 + this.height < _obj.y || this.y - 50 > _obj.y + _obj.height || this.x + 50 + this.width < _obj.x || this.x - 50 > _obj.x + _obj.width) {
+                crash = false;
+            }
+            return crash;
+        };
         return Player;
     }());
     var Obstacle = (function () {
         function Obstacle(_width, _height) {
-            // do {
-            this.width = Math.round(Math.random() * 100 + 30);
-            this.height = Math.round(Math.random() * 100 + 30);
-            this.x = Math.round(Math.random() * (_width - this.width));
-            this.y = Math.round(Math.random() * (_height - this.height));
-            // }
-            // while(playerrect.crashWithGhost(obstacles[obstacles.length-1]));
+            do {
+                this.width = Math.round(Math.random() * 100 + 30);
+                this.height = Math.round(Math.random() * 100 + 30);
+                this.x = Math.round(Math.random() * (_width - this.width));
+                this.y = Math.round(Math.random() * (_height - this.height));
+            } while (playerrect.crashWithGhost(this));
             this.speed = Math.round(Math.random() + 1);
             this.direction = Math.round(Math.random());
             this.switchDirection = Math.round(Math.random());
@@ -77,20 +84,37 @@ var Abschlussaufgabe;
         };
         return Obstacle;
     }());
-    // class bonus {
-    // 	x : number;
-    // 	y : number;
+    var Bonus = (function () {
+        function Bonus(_width, _height) {
+            this.width = 12;
+            this.height = 12;
+            this.x = Math.round(Math.random() * (_width - this.width));
+            this.y = Math.round(Math.random() * (_height - this.height));
+            this.draw();
+        }
+        Bonus.prototype.draw = function () {
+            crc2.fillStyle = "#39D530";
+            crc2.fillRect(this.x, this.y, this.width, this.height);
+        };
+        Bonus.prototype.collected = function (_obj) {
+            var collected = true;
+            if (this.y + this.height < _obj.y || this.y > _obj.y + _obj.height || this.x + this.width < _obj.x || this.x > _obj.x + _obj.width) {
+                collected = false;
+            }
+            return collected;
+        };
+        return Bonus;
+    }());
+    // class points extends Bonus {
     // }
-    // class points extends bonus {
-    // }
-    // class speed extends bonus {
+    // class speed extends Bonus {
     // }
     window.addEventListener("load", init);
     var crc2;
     var playerrect;
     var obstacles = [];
     // let speedbonus : speed[] = [];
-    // let pointbonus : points[] = [];
+    var bonuspoints = [];
     var gameduration = 0;
     var score = 0;
     function init(_event) {
@@ -113,7 +137,7 @@ var Abschlussaufgabe;
                     playerrect.y = 0;
                 }
                 else {
-                    playerrect.y -= 6;
+                    playerrect.y -= playerrect.speed;
                 }
                 console.log("up");
                 break;
@@ -122,7 +146,7 @@ var Abschlussaufgabe;
                     playerrect.y = 750 - playerrect.height;
                 }
                 else {
-                    playerrect.y += 6;
+                    playerrect.y += playerrect.speed;
                 }
                 console.log("down");
                 break;
@@ -131,7 +155,7 @@ var Abschlussaufgabe;
                     playerrect.x = 0;
                 }
                 else {
-                    playerrect.x -= 6;
+                    playerrect.x -= playerrect.speed;
                 }
                 console.log("left");
                 break;
@@ -140,12 +164,34 @@ var Abschlussaufgabe;
                     playerrect.x = 750 - playerrect.width;
                 }
                 else {
-                    playerrect.x += 6;
+                    playerrect.x += playerrect.speed;
                 }
                 console.log("right");
                 break;
             default:
                 break;
+        }
+    }
+    function manageBonusPoints(_width, _height) {
+        if ((gameduration % 2000 == 0) && (Math.random() < 0.3) && (bonuspoints.length < 10)) {
+            bonuspoints.push(new Bonus(_width, _height));
+        }
+        for (var i = 0; i < bonuspoints.length; i++) {
+            bonuspoints[i].draw();
+        }
+        for (var i = 0; i < bonuspoints.length; i++) {
+            if (bonuspoints[i].collected(playerrect)) {
+                score += 15;
+                bonuspoints.splice(i, 1);
+            }
+        }
+    }
+    function manageObstacle(_width, _height) {
+        if ((gameduration % 2000 == 0) && (Math.random() < 0.3)) {
+            obstacles.push(new Obstacle(_width, _height));
+            if ((Math.random() < 0.5) || (obstacles.length > 16)) {
+                deleteObstacle(Math.round(Math.random() * (obstacles.length - 1)));
+            }
         }
     }
     function deleteObstacle(_position) {
@@ -156,6 +202,12 @@ var Abschlussaufgabe;
         crc2.fillRect(0, 0, _width, _height);
         playerrect.draw();
         gameduration += 20;
+        manageObstacle(_width, _height);
+        manageBonusPoints(_width, _height);
+        if (gameduration % 1000 == 0) {
+            score++;
+        }
+        document.getElementById("score").textContent = "Your score: " + score.toString();
         for (var i = 0; i < obstacles.length; i++) {
             obstacles[i].update(_width, _height);
         }
