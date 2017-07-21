@@ -28,23 +28,19 @@ namespace Abschlussaufgabe {
 
 			for (let i = 0; i < keys.length; i++) {
 				if (keys[i] == 38) { // up
-					if (playerrect.y < 7) {playerrect.y = 0;} // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
-					else {playerrect.y -= playerrect.speed;}
+					up();
 				}
 
 				if (keys[i] == 40) { // down
-					if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
-					else {playerrect.y += playerrect.speed;}
+					down();
 				}
 
 				if (keys[i] == 37) { // left
-					if (playerrect.x < 7) {playerrect.x = 0;}
-					else {playerrect.x -= playerrect.speed;}
+					left();
 				}
 
 				if (keys[i] == 39) { // right
-					if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
-					else {playerrect.x += playerrect.speed;}
+					right();
 				}
 			}
 		}
@@ -183,6 +179,10 @@ namespace Abschlussaufgabe {
 			obstacles.push(new Obstacle(canvas.width, canvas.height));
 		}
 
+		document.getElementById("up").addEventListener("click", up, false);
+		document.getElementById("down").addEventListener("click", down, false);
+		document.getElementById("right").addEventListener("click", right, false);
+		document.getElementById("left").addEventListener("click", left, false);
 		document.addEventListener("keydown", keypress, false);
 		window.setTimeout(animate, 20, canvas.width, canvas.height);
 	}
@@ -203,12 +203,27 @@ namespace Abschlussaufgabe {
 
 		if (_event.keyCode == 39) { // right
 			keys.push(39)
-		}
+		}		
+	}
 
+	function up():void {
+		if (playerrect.y < 7) {playerrect.y = 0;} // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
+		else {playerrect.y -= playerrect.speed;}
+	}
 
+	function down():void {
+		if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
+		else {playerrect.y += playerrect.speed;}
+	}
 
+	function left():void {
+		if (playerrect.x < 7) {playerrect.x = 0;}
+		else {playerrect.x -= playerrect.speed;}
+	}
 
-		
+	function right():void {
+		if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
+		else {playerrect.x += playerrect.speed;}
 	}
 
 	function manageBonusPoints(_width: number, _height: number): void{

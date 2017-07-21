@@ -9,3 +9,45 @@ canvas {
 h3 {
 	color: white;
 }
+
+.ctrl {
+	width: 200px;
+	height: 200px;
+	display: inline;
+	float: left;
+}
+
+#up {
+	display: block;
+	margin-left: 200px;
+	background-image: url("../img/up.png");
+	background-size: 200px 200px;
+}
+
+#down {
+	background-image: url("../img/down.png");
+	background-size: 200px 200px;
+}
+
+#right {
+	background-image: url("../img/right.png");
+	background-size: 200px 200px;
+}
+
+#left {
+	background-image: url("../img/left.png");
+	background-size: 200px 200px;
+	clear: left;
+}
+
+
+@media only screen and (min-width: 769px) {
+	.ctrl {
+		display: none;
+	}
+
+	#up {
+		display: none;
+	}
+
+}

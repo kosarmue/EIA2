@@ -19,36 +19,16 @@ var Abschlussaufgabe;
         Player.prototype.move = function () {
             for (var i = 0; i < keys.length; i++) {
                 if (keys[i] == 38) {
-                    if (playerrect.y < 7) {
-                        playerrect.y = 0;
-                    } // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
-                    else {
-                        playerrect.y -= playerrect.speed;
-                    }
+                    up();
                 }
                 if (keys[i] == 40) {
-                    if (playerrect.y + playerrect.height > 750 - 7) {
-                        playerrect.y = 750 - playerrect.height;
-                    }
-                    else {
-                        playerrect.y += playerrect.speed;
-                    }
+                    down();
                 }
                 if (keys[i] == 37) {
-                    if (playerrect.x < 7) {
-                        playerrect.x = 0;
-                    }
-                    else {
-                        playerrect.x -= playerrect.speed;
-                    }
+                    left();
                 }
                 if (keys[i] == 39) {
-                    if (playerrect.x + playerrect.width > 750 - 7) {
-                        playerrect.x = 750 - playerrect.width;
-                    }
-                    else {
-                        playerrect.x += playerrect.speed;
-                    }
+                    right();
                 }
             }
         };
@@ -168,6 +148,10 @@ var Abschlussaufgabe;
         for (var i = 0; i < 8; i++) {
             obstacles.push(new Obstacle(canvas.width, canvas.height));
         }
+        document.getElementById("up").addEventListener("click", up, false);
+        document.getElementById("down").addEventListener("click", down, false);
+        document.getElementById("right").addEventListener("click", right, false);
+        document.getElementById("left").addEventListener("click", left, false);
         document.addEventListener("keydown", keypress, false);
         window.setTimeout(animate, 20, canvas.width, canvas.height);
     }
@@ -184,6 +168,38 @@ var Abschlussaufgabe;
         }
         if (_event.keyCode == 39) {
             keys.push(39);
+        }
+    }
+    function up() {
+        if (playerrect.y < 7) {
+            playerrect.y = 0;
+        } // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
+        else {
+            playerrect.y -= playerrect.speed;
+        }
+    }
+    function down() {
+        if (playerrect.y + playerrect.height > 750 - 7) {
+            playerrect.y = 750 - playerrect.height;
+        }
+        else {
+            playerrect.y += playerrect.speed;
+        }
+    }
+    function left() {
+        if (playerrect.x < 7) {
+            playerrect.x = 0;
+        }
+        else {
+            playerrect.x -= playerrect.speed;
+        }
+    }
+    function right() {
+        if (playerrect.x + playerrect.width > 750 - 7) {
+            playerrect.x = 750 - playerrect.width;
+        }
+        else {
+            playerrect.x += playerrect.speed;
         }
     }
     function manageBonusPoints(_width, _height) {
