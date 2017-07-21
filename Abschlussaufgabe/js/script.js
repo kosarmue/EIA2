@@ -12,6 +12,46 @@ var Abschlussaufgabe;
             this.speed = 8;
             this.draw();
         }
+        Player.prototype.update = function () {
+            this.move();
+            this.draw();
+        };
+        Player.prototype.move = function () {
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == 38) {
+                    if (playerrect.y < 7) {
+                        playerrect.y = 0;
+                    } // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
+                    else {
+                        playerrect.y -= playerrect.speed;
+                    }
+                }
+                if (keys[i] == 40) {
+                    if (playerrect.y + playerrect.height > 750 - 7) {
+                        playerrect.y = 750 - playerrect.height;
+                    }
+                    else {
+                        playerrect.y += playerrect.speed;
+                    }
+                }
+                if (keys[i] == 37) {
+                    if (playerrect.x < 7) {
+                        playerrect.x = 0;
+                    }
+                    else {
+                        playerrect.x -= playerrect.speed;
+                    }
+                }
+                if (keys[i] == 39) {
+                    if (playerrect.x + playerrect.width > 750 - 7) {
+                        playerrect.x = 750 - playerrect.width;
+                    }
+                    else {
+                        playerrect.x += playerrect.speed;
+                    }
+                }
+            }
+        };
         Player.prototype.draw = function () {
             crc2.fillStyle = "#fff";
             crc2.fillRect(this.x, this.y, this.width, this.height);
@@ -115,6 +155,8 @@ var Abschlussaufgabe;
     var bonuspoints = [];
     var gameduration = 0;
     var score = 0;
+    var keys = [];
+    var gameState = true;
     // Funktion zum Erstellen des Spiels
     function init(_event) {
         var canvas;
@@ -131,41 +173,17 @@ var Abschlussaufgabe;
     }
     // Verarbeiten von Tastendrückern
     function keypress(_event) {
-        switch (_event.keyCode) {
-            case 38:
-                if (playerrect.y < 7) {
-                    playerrect.y = 0;
-                } // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
-                else {
-                    playerrect.y -= playerrect.speed;
-                }
-                break;
-            case 40:
-                if (playerrect.y + playerrect.height > 750 - 7) {
-                    playerrect.y = 750 - playerrect.height;
-                }
-                else {
-                    playerrect.y += playerrect.speed;
-                }
-                break;
-            case 37:
-                if (playerrect.x < 7) {
-                    playerrect.x = 0;
-                }
-                else {
-                    playerrect.x -= playerrect.speed;
-                }
-                break;
-            case 39:
-                if (playerrect.x + playerrect.width > 750 - 7) {
-                    playerrect.x = 750 - playerrect.width;
-                }
-                else {
-                    playerrect.x += playerrect.speed;
-                }
-                break;
-            default:
-                break;
+        if (_event.keyCode == 38) {
+            keys.push(38);
+        }
+        if (_event.keyCode == 40) {
+            keys.push(40);
+        }
+        if (_event.keyCode == 37) {
+            keys.push(37);
+        }
+        if (_event.keyCode == 39) {
+            keys.push(39);
         }
     }
     function manageBonusPoints(_width, _height) {
@@ -177,7 +195,7 @@ var Abschlussaufgabe;
         }
         for (var i = 0; i < bonuspoints.length; i++) {
             if (bonuspoints[i].collected(playerrect)) {
-                score += 15;
+                score += 20;
                 bonuspoints.splice(i, 1);
             }
         }
@@ -185,7 +203,7 @@ var Abschlussaufgabe;
     function manageObstacle(_width, _height) {
         if ((gameduration % 2000 == 0) && (Math.random() < 0.3)) {
             obstacles.push(new Obstacle(_width, _height));
-            if ((Math.random() < 0.5) || (obstacles.length > 16)) {
+            if ((Math.random() < 0.5) || (obstacles.length > 20)) {
                 deleteObstacle(Math.round(Math.random() * (obstacles.length - 1)));
             }
         }
@@ -195,29 +213,34 @@ var Abschlussaufgabe;
     }
     // Funktion, die jeden Frame zeichnet
     function animate(_width, _height) {
-        crc2.fillStyle = "#000"; // Zeichnet Hintergrund
-        crc2.fillRect(0, 0, _width, _height);
-        playerrect.draw(); // Zeichnet Spieler
-        gameduration += 20; // Zählt Zeit mit
-        manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
-        manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
-        if (gameduration % 1000 == 0) {
-            score++;
+        if (gameState == true) {
+            crc2.fillStyle = "#000"; // Zeichnet Hintergrund
+            crc2.fillRect(0, 0, _width, _height);
+            playerrect.update(); // Zeichnet Spieler
+            gameduration += 20; // Zählt Zeit mit
+            manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
+            manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
+            if (gameduration % 1000 == 0) {
+                score++;
+            }
+            document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
+            for (var i = 0; i < obstacles.length; i++) {
+                obstacles[i].update(_width, _height);
+            }
+            keys = [];
+            // Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
+            window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
+            for (var i = 0; i < obstacles.length; i++) {
+                if (playerrect.crashWith(obstacles[i])) {
+                    gameState = false;
+                }
+            }
         }
-        document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
-        for (var i = 0; i < obstacles.length; i++) {
-            obstacles[i].update(_width, _height);
+        else {
+            if (!alert('GAME OVER! Your score: ' + score)) {
+                window.location.reload();
+            }
         }
-        window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
-        // Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
-        // for (let i = 0; i < obstacles.length; i++) {
-        //           if (playerrect.crashWith(obstacles[i])) {
-        //               // ENDE          
-        //           }
-        //           else {
-        //           	window.setTimeout(animate, 20, _width, _height);
-        //           }
-        //       }     
     }
 })(Abschlussaufgabe || (Abschlussaufgabe = {}));
 //# sourceMappingURL=script.js.map

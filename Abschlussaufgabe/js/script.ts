@@ -19,6 +19,36 @@ namespace Abschlussaufgabe {
 			this.draw();
 		}
 
+		update(): void {
+			this.move();
+			this.draw();
+		}
+
+		move(): void {
+
+			for (let i = 0; i < keys.length; i++) {
+				if (keys[i] == 38) { // up
+					if (playerrect.y < 7) {playerrect.y = 0;} // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
+					else {playerrect.y -= playerrect.speed;}
+				}
+
+				if (keys[i] == 40) { // down
+					if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
+					else {playerrect.y += playerrect.speed;}
+				}
+
+				if (keys[i] == 37) { // left
+					if (playerrect.x < 7) {playerrect.x = 0;}
+					else {playerrect.x -= playerrect.speed;}
+				}
+
+				if (keys[i] == 39) { // right
+					if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
+					else {playerrect.x += playerrect.speed;}
+				}
+			}
+		}
+
 		draw(): void {
 			crc2.fillStyle = "#fff";
 			crc2.fillRect(this.x, this.y, this.width, this.height);
@@ -135,7 +165,8 @@ namespace Abschlussaufgabe {
 	let bonuspoints : Bonus[] = [];
 	let gameduration : number = 0;
 	let score : number = 0;
-
+	let keys : number [] = [];
+	let gameState : boolean = true;
 
 // Funktion zum Erstellen des Spiels
 	function init(_event: Event): void {
@@ -158,26 +189,26 @@ namespace Abschlussaufgabe {
 
 // Verarbeiten von Tastendrückern
 	function keypress(_event : KeyboardEvent): void {
-		switch (_event.keyCode) {
-			case 38: // up
-				if (playerrect.y < 7) {playerrect.y = 0;} // Wenn der Spieler weniger als einen Tastendruck vom Rand weg ist, bewegt er sich zum Rand (und nicht darüber hinaus)
-				else {playerrect.y -= playerrect.speed;}
-			 	break;
-			case 40: // down
-				if (playerrect.y+playerrect.height > 750-7) {playerrect.y = 750-playerrect.height;}
-				else {playerrect.y += playerrect.speed;}
-			 	break;
-			case 37: // left
-				if (playerrect.x < 7) {playerrect.x = 0;}
-				else {playerrect.x -= playerrect.speed;}
-			 	break;
-			case 39: // right
-				if (playerrect.x+playerrect.width > 750-7) {playerrect.x = 750-playerrect.width;}
-				else {playerrect.x += playerrect.speed;}
-			 	break;
-			default: 
-				break;
+		if (_event.keyCode == 38) { // up
+			keys.push(38)
 		}
+
+		if (_event.keyCode == 40) { // down
+			keys.push(40)
+		}
+
+		if (_event.keyCode == 37) { // left
+			keys.push(37)
+		}
+
+		if (_event.keyCode == 39) { // right
+			keys.push(39)
+		}
+
+
+
+
+		
 	}
 
 	function manageBonusPoints(_width: number, _height: number): void{
@@ -189,7 +220,7 @@ namespace Abschlussaufgabe {
         }
         for (let i = 0; i < bonuspoints.length; i++) {
             if(bonuspoints[i].collected(playerrect)){
-                score += 15;
+                score += 20;
                 bonuspoints.splice(i,1);
             }
         }
@@ -198,7 +229,7 @@ namespace Abschlussaufgabe {
 	function manageObstacle(_width: number, _height: number): void {
         if ((gameduration % 2000 == 0)&&(Math.random()<0.3)) {
             obstacles.push(new Obstacle(_width, _height));
-            if((Math.random()<0.5)||(obstacles.length>16)){
+            if((Math.random()<0.5)||(obstacles.length>20)){
                 deleteObstacle(Math.round(Math.random()*(obstacles.length-1)));
             }
         }
@@ -210,39 +241,46 @@ namespace Abschlussaufgabe {
 
 // Funktion, die jeden Frame zeichnet
 	function animate(_width: number, _height: number): void {
-		crc2.fillStyle = "#000"; // Zeichnet Hintergrund
-		crc2.fillRect(0, 0, _width, _height);
+		if (gameState == true) {
+			crc2.fillStyle = "#000"; // Zeichnet Hintergrund
+			crc2.fillRect(0, 0, _width, _height);
 
-		playerrect.draw(); // Zeichnet Spieler
+			playerrect.update(); // Zeichnet Spieler
 
-		gameduration += 20; // Zählt Zeit mit
+			gameduration += 20; // Zählt Zeit mit
 
-		manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
-		manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
+			manageObstacle(_width, _height); // Fügt Obstacles hinzu oder entfernt welche
+			manageBonusPoints(_width, _height); // Fügt Bonuspunkte Hinzu oder entfernt welche
 
-		if (gameduration%1000==0) { // Erhöht den Score jede Sekunde um 1
-			score++;
+			if (gameduration%1000==0) { // Erhöht den Score jede Sekunde um 1
+				score++;
+			}
+			document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
+
+
+
+			for (let i = 0; i < obstacles.length; i++) { // Bewegt Obstacles und zeichnet sie neu
+				obstacles[i].update(_width, _height);
+			}
+
+			keys = [];
+
+			// Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
+
+			   
+
+			window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
+
+			for (let i = 0; i < obstacles.length; i++) {
+	            if (playerrect.crashWith(obstacles[i])) {
+	            	gameState = false;
+	            }
+	        }
 		}
-		document.getElementById("score").textContent = "Your score: " + score.toString(); // Gibt aktuellen Score aus
+		
+		else {
+			if(!alert('GAME OVER! Your score: ' + score)){window.location.reload();}
+		} 
 
-
-
-		for (let i = 0; i < obstacles.length; i++) { // Bewegt Obstacles und zeichnet sie neu
-			obstacles[i].update(_width, _height);
-		}
-
-		window.setTimeout(animate, 20, _width, _height); // lädt nächsten Frame
-
-
-// Soll checken ob das playerrectangle ein Obstacle berührt. Falls ja, soll kein neuer Frame geladen werden und das Spiel stehen bleiben. Falls nein, soll der nächste Frame geladen werden.
-
-		// for (let i = 0; i < obstacles.length; i++) {
-  //           if (playerrect.crashWith(obstacles[i])) {
-  //               // ENDE          
-  //           }
-  //           else {
-  //           	window.setTimeout(animate, 20, _width, _height);
-  //           }
-  //       }     
 	}
 }
